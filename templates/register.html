@@ -1,0 +1,57 @@
+{% extends ('layout3.html') %}
+{% block title %}Register{% endblock %}
+{% block header %}
+<header class="masthead" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcToLNn2dvgVgblO9pfKf-Oj5zjaD55D_21mwg&usqp=CAU')">
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <div class="site-heading">
+            <h1>Cyber Blog</h1>
+            <span class="subheading">A Online Blogging Site</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+{% endblock %}
+{% block body %}
+<center>
+	<div id="main">
+	<h1 style="color:green;">Register</h1>
+	<form action = '/register' method='POST'>
+	<div class="form-group" style="padding-left: 100px;padding-right: 100px;">
+	    <label for="exampleInputEmail1">Name</label>
+	    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="name">
+	  </div>
+	  <div class="form-group" style="padding-left: 100px;padding-right: 100px;">
+	    <label for="exampleInputEmail1">Username</label>
+	    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="user">
+	  </div>
+	  <div class="form-group" style="padding-left: 100px;padding-right: 100px;">
+	    <label for="exampleInputPassword1">Password</label>
+	    <input type="password" class="form-control" id="exampleInputPassword1" name='pass'>
+	   </div>
+	  <div class="form-group" style="padding-left: 100px;padding-right: 100px;">
+	    <label for="exampleInputPassword1">Confirm Password</label>
+	    <input type="password" class="form-control" id="exampleInputPassword1" name='pass1'>
+	  </div>
+	  <button type="submit" class="btn btn-primary">Register</button>
+	</form>
+</div>
+</center>
+<script type="text/javascript">
+
+$(document).ready(function () {
+    // Handler for .ready() called.
+    $('html, body').animate({
+        scrollTop: $('#main').offset().top
+    }, "fast", foucus_user());
+});
+
+function foucus_user(){
+	document.getElementById('exampleInputEmail1').focus()
+}
+
+</script>
+{% endblock %}

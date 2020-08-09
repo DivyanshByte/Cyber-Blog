@@ -1,0 +1,44 @@
+{% extends('layout3.html') %}
+{% block title %} Home {% endblock %}
+
+{% block header %}
+  <header class="masthead" style="background-image: url('/static/blog/img/home-bg.jpg')">
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <div class="site-heading">
+            <h1>Cyber Blog</h1>
+            <span class="subheading">A Online Blogging Site</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+{% endblock %}
+{% block body %}
+
+  <!-- Main Content -->
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+      {% for blog in blogl %}
+        <div class="post-preview">
+          <a href="/@{{ userd.filter_by(id=blog.user_id).first().username }}/{{blog.url}}">
+            <h2 class="post-title">
+              {{ blog.title }}
+            </h2>
+            <h3 class="post-subtitle">
+              {{ blog.subtitle }}
+            </h3>
+          </a>
+          <p class="post-meta">Posted by
+            <a href="/@{{ userd.filter_by(id=blog.user_id).first().username }}">{{ userd.filter_by(id=blog.user_id).first().name }}</a>
+            on {{ blog.datetime }}</p> 
+        </div>
+        <hr>
+      {% endfor %}
+      </div>
+    </div>
+  </div>
+  {% endblock %}

@@ -1,0 +1,84 @@
+{% extends('layout3.html') %}
+{% block title %}{{ ptitle }}{% endblock %}
+{% block header %}
+  <!-- Page Header -->
+  <header class="masthead" style="background-image: url('https://carolinealberoni.files.wordpress.com/2015/01/blog-372771_640.jpg')">
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <div class="page-heading">
+            <h1>{{ ptitle }}</h1>
+            <span class="subheading">{{ pstitle }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+{% endblock %}
+{% block body %}
+  <!-- Main Content -->
+  <div id = "main">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        <form name="newForm" action="{{ to }}" method="POST" id="newForm">
+          <div class="control-group">
+            <div class="form-group floating-label-form-group controls">
+              <label>Title</label>
+              <input type="text" class="form-control" placeholder="Title" id="title" required data-validation-required-message="Please enter Blog's Title" name="title" value="{{ title }}">
+              <p class="help-block text-danger"></p>
+            </div>
+          </div>
+          <div class="control-group">
+            <div class="form-group floating-label-form-group controls">
+              <label>Subtitle</label>
+              <input type="text" class="form-control" placeholder="Subtitle" id="subtitle" required data-validation-required-message="Please enter Blog's Subtitle" name="subtitle" value="{{ subtitle }}">
+              <p class="help-block text-danger"></p>
+            </div>
+          </div>
+          <div class="control-group">
+            <div class="form-group floating-label-form-group controls">
+              <label>Featured Image Url</label>
+              <input type="url" class="form-control" placeholder="Featured Image Url" id="imgu" required data-validation-required-message="Please enter Blog's Featured Image Url" name="imgu" value="{{ image }}">
+              <p class="help-block text-danger"></p>
+            </div>
+          </div>
+          <div class="control-group">
+            <div class="form-group floating-label-form-group controls">
+              <label>Content</label>
+              <textarea rows="10" class="form-control" placeholder="Content" id="content" required data-validation-required-message="Please enter Blog's Content" name="content">{{ content }}</textarea>
+              <p class="help-block text-danger"></p>
+            </div>
+            <div class="control-group">
+              <div class="form-group floating-label-form-group controls">
+                <label>Url</label>
+                    <span style="size: 100px;">@{{ userd.username }}/</span>
+                    <input type="text" class = "form-control" placeholder="Url" id="url" required data-validation-required-message="Please enter Blog's Url" name="url" value="{{ url }}">
+                    <p>You Have to Put the url from which your blog can be opened</p>
+                    <p class="help-block text-danger"></p>
+            </div>
+          </div>
+          <br>
+          <div id="success"></div>
+          <button type="submit" class="btn btn-primary" id="sendMessageButton">Update</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+
+$(document).ready(function () {
+    // Handler for .ready() called.
+    $('html, body').animate({
+        scrollTop: $('#main').offset().top
+    }, "fast", foucus_user());
+});
+
+function foucus_user(){
+  document.getElementById('title').focus()
+}
+
+</script>
+{% endblock %}

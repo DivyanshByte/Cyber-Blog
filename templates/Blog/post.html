@@ -1,0 +1,238 @@
+{% extends('layout3.html') %}
+{% block title %}{{ blogd.title }}{% endblock %}
+{% block header %}
+  <!-- Page Header -->
+  <header class="masthead" style="background-image: url('{{ blogd.image }}')">
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <div class="post-heading">
+            <p>{% if session['user_id'] %}{% if blogd.user_id == session['user_id']%}<span style="float: right;"><a href="/update/{{blogd.id}}">Edit Blog</a>&nbsp;&nbsp;<a href="/stats/{{blogd.id}}">View Stats</a></span></p>{% endif %}{% endif %}
+            <h1>{{ blogd.title }}</h1>
+            <h2 class="subheading">{{ blogd.subtitle }}</h2>
+            <span class="meta">Posted by
+              <a href="/blog/@{{ userd.username }}">{{ userd.name }}</a>
+              on {{ blogd.datetime }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+{% endblock %}
+{% block body %}
+<style>
+#snackbar {
+  visibility: hidden;
+  min-width: 250px;
+  margin-left: -125px;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  border-radius: 2px;
+  padding: 16px;
+  position: fixed;
+  z-index: 1;
+  left: 50%;
+  bottom: 30px;
+  font-size: 17px;
+}
+
+#snackbar.show {
+  visibility: visible;
+  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+  animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+#snackbar1 {
+  visibility: hidden;
+  min-width: 250px;
+  margin-left: -125px;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  border-radius: 2px;
+  padding: 16px;
+  position: fixed;
+  z-index: 1;
+  left: 50%;
+  bottom: 30px;
+  font-size: 17px;
+}
+
+#snackbar1.show {
+  visibility: visible;
+  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+  animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+@-webkit-keyframes fadein {
+  from {bottom: 0; opacity: 0;} 
+  to {bottom: 30px; opacity: 1;}
+}
+
+@keyframes fadein {
+  from {bottom: 0; opacity: 0;}
+  to {bottom: 30px; opacity: 1;}
+}
+
+@-webkit-keyframes fadeout {
+  from {bottom: 30px; opacity: 1;} 
+  to {bottom: 0; opacity: 0;}
+}
+
+@keyframes fadeout {
+  from {bottom: 30px; opacity: 1;}
+  to {bottom: 0; opacity: 0;}
+}
+</style>
+
+  <!-- Post Content -->
+<div id="main">  
+<article>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <span class="meta">
+              <p style="font-size: 35px;">{{blogd.title}}</p>
+              <img style="border-radius: 50%;" src="data:image/png;base64;, {{ UPLOAD_FOLDER1 }}" width="50" height="50">&nbsp;&nbsp;&nbsp;<a href="/@{{ userd.username }}">{{ userd.name }} </a>{% if session['user_id'] %}{% if userd.id != session['user_id'] %}{% if follow == 'False' %}<button class="btn-success btn float-right" id="follow">Follow</button>{% endif %}{% endif %}{%endif%}<p style="font-size: 22px;">{{ blogd.subtitle }}</p><img src="{{ blogd.image }}" style="width: 100%; height: auto;" width="500" height="300"><hr></span>
+          {{ blogd.content|safe }}
+          <hr><h4>Claps</h4><br>
+            &#128079; <span class="meta" id="clap">{{ blogd.claps }}</span><span><br>Click on Number to Clap
+          </span>
+          <div id="snackbar">You Can't Clap on your Own Blog</div>
+          <div id="snackbar1">Automatically Reloading to display comment in 1 second</div>
+          <hr><br>
+          <h1>Comments</h1>
+          <div id="comments">
+            {% for i in range(0, comments|length, 2)%}
+            {% if comments[i] != '' %}
+            <div id="comment">
+              <center>
+              <p style="border: 1px solid red;"><span style="font-size: 25px;"><u>{{ comments[i] }}</u></span>
+              <br><span style="font-size: 30px;"><i>{{ comments[i+1] }}</i></span></p>
+            </center>
+            </div>
+            <hr style="border-top: 1px dashed gray;">
+            {% endif %}
+            {% endfor %}
+        </div>
+        <br><h1>Write Comment</h1><br>
+        <div id="comment_write" style="border: 0.1px dashed blue; padding: 10px;">
+                <div class="card-block">
+                    <label>Name: </label>
+                    {% if session['user_id'] %}
+                    <input type="text" id = "cname" value="{{ user1.name }}" disabled>
+                    {% else %}
+                    <input type="text" id="cname">
+                    {% endif %}
+                    <textarea placeholder="Write your comment here!" class="pb-cmnt-textarea" id="comment_text"></textarea>
+                    <center>
+                    <button class="btn btn-primary" type="button" id="share_comment">Share</button>
+                  </center>
+                </div>
+
+          <style>
+              .pb-cmnt-textarea {
+                  resize: none;
+                  padding: 20px;
+                  height: 130px;
+                  width:100%;
+                  border: 1px solid #F2F2F2;
+              }
+          </style>
+        </div>
+        </div>
+      </div>
+    </div>
+  </article>
+</div>
+<script>
+$(document).ready(function () {
+    // Handler for .ready() called.
+    $('html, body').animate({
+        scrollTop: $('#main').offset().top
+    }, "fast");
+});
+$('#follow').click(function() {
+    $.ajax({
+        url: '/follow',
+        type: 'POST',
+        data: {
+            user_id: '{{ userd.id }}',
+            from_id: "{{ session['user_id']}}"
+        },
+        success: function(msg) {
+            fb = document.getElementById('follow');
+            fb.textContent="Following";
+            fb.disabled= true;
+        }               
+    });
+});
+</script>
+{% if session['user_id']%}
+<script>
+$('#clap').click(function() {
+  if({{session['user_id']}} != {{blogd.user_id}}){
+    $.ajax({
+        url: '/clap',
+        type: 'POST',
+        data: {
+            blog_id:"{{ blogd.id }}"
+        },
+        success: function(msg) {
+          fb1 = document.getElementById('clap');
+          a= Number(fb1.textContent)+1;
+          $('#clap').text(a);
+        }               
+    });
+  }
+  else{
+    var toast = document.getElementById("snackbar");
+    toast.className = "show";
+    setTimeout(function(){ toast.className = toast.className.replace("show", ""); }, 2000);
+  }
+});
+</script>
+{% else %}
+<script>
+$('#clap').click(function() {
+  $.ajax({
+        url: '/clap',
+        type: 'POST',
+        data: {
+            blog_id:"{{ blogd.id }}"
+        },
+        success: function(msg) {
+          fb1 = document.getElementById('clap');
+          a= Number(fb1.textContent)+1;
+          $('#clap').text(a);
+        }               
+    });
+});
+  </script>
+  {% endif %}
+<script>
+
+$('#share_comment').click(function() {
+  $.ajax({
+    url:'/comment',
+    type:'POST',
+    data: {
+      blog_id: '{{ blogd.id }}',
+      name: document.getElementById('cname').value,
+      comment: document.getElementById('comment_text').value
+    },
+    success: function(msg) {
+      document.getElementById('cname').value = "";
+      document.getElementById('comment_text').value = "";
+      var toast = document.getElementById("snackbar1");
+    toast.className = "show";
+    setTimeout(function(){ toast.className = toast.className.replace("show", ""); }, 2000);
+    setTimeout(function() {
+      window.location.reload()
+    }, 1000)
+    }
+  });
+});
+  </script>
+  {% endblock %}

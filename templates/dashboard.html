@@ -1,0 +1,35 @@
+{% extends('layout3.html') %}
+{% block title %}Dashboard{% endblock %}
+{% block header %}
+<header class="masthead" style="background-image: url('https://neilpatel.com/wp-content/uploads/2018/10/blog.jpg')">
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <div class="site-heading">
+            <h1>Cyber Blog</h1>
+            <span class="subheading">A Online Blogging Site</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+{% endblock %}
+{% block body %}
+<center>
+  <div id="main">
+	<h1>Hello {{name}}</h1>
+</div>
+</center>
+<script type="text/javascript">
+
+$(document).ready(function () {
+    // Handler for .ready() called.
+    $('html, body').animate({
+        scrollTop: $('#main').offset().top
+    }, "fast");
+});
+
+
+</script>
+{% endblock %}

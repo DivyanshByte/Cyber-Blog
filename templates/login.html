@@ -1,0 +1,50 @@
+{% extends ('layout3.html') %}
+{% block title %}Login{% endblock %}
+{% block header %}
+<header class="masthead" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTu8rtw6LzcuwFDBlzwk3xeSnkdspqDzUVjAA&usqp=CAU')">
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <div class="site-heading">
+            <h1>Cyber Blog</h1>
+            <span class="subheading">A Online Blogging Site</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+{% endblock %}
+{% block body %}
+
+<center>
+	<div id="main">
+	<h1 style="color:green">Login</h1>
+	<form action = '/login' method='POST'>
+	  <div class="form-group" style="padding-left: 100px;padding-right: 100px;">
+	    <label for="user">Username</label>
+	    <input type="text" class="form-control" id="user" aria-describedby="emailHelp" name="user">
+	  </div>
+	  <div class="form-group" style="padding-left: 100px;padding-right: 100px;">
+	    <label for="pass">Password</label>
+	    <input type="password" class="form-control" id="pass" name='pass'>
+	  </div>
+	  <button type="submit" class="btn btn-primary">Login</button>
+	</form>
+</div>
+</center>
+<script type="text/javascript">
+
+$(document).ready(function () {
+    // Handler for .ready() called.
+    $('html, body').animate({
+        scrollTop: $('#main').offset().top
+    }, "fast", foucus_user());
+});
+
+function foucus_user(){
+	document.getElementById('user').focus()
+}
+
+</script>
+{% endblock %}
