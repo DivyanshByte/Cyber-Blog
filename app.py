@@ -61,8 +61,8 @@ def login():
 		user = request.form.get('user')
 		passw = request.form.get('pass')
 		if User.query.filter_by(username=user).first() is None:
-			flash("You Have Not Registerd", "error")
-			return redirect('/register')
+			flash("Username Not Found", "error")
+			return redirect('/login')
 		userd = User.query.filter_by(username=user).first()
 		if userd.password != passw:
 			flash("Wrong Password", "error")
@@ -211,7 +211,7 @@ def blog_new():
 			query = Blog(user_id=user_id, title=title, subtitle=subtitle, image=image, datetime=date_time, content=content, url=url, views=0, claps=0, comments="")
 			db.session.add(query)
 			db.session.commit()
-			return redirect(f'/@{Users.query.filter_by(id=session["user_id"]).first().username}/{code}')
+			return redirect(f'/@{User.query.filter_by(id=session["user_id"]).first().username}/{url}')
 		else:
 			return "503", 503
 
@@ -347,4 +347,4 @@ def stats(blog_id):
 
 
 if __name__ == '__main__':
-	app.run(debug=True)
+	app.run(debug=True,port=8000)
